@@ -1,7 +1,7 @@
 # security group to be attached to our instance
-resource "aws_security_group" "3-tier-guilherme-security-group" {
-  name        = "3-tier Guilherme Security Group"
-  description = "3-tier Guilherme Security Group"
+resource "aws_security_group" "3-tier-nd-security-group" {
+  name        = "3-tier nd Security Group"
+  description = "3-tier nd Security Group"
 
   # allowing SSH
   ingress {
@@ -26,5 +26,5 @@ resource "aws_security_group" "3-tier-guilherme-security-group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  vpc_id = "${ aws_vpc.vpc_guilherme.id }"
+  vpc_id = "${ aws_vpc.vpc_nd.id }"
 }
