@@ -1,21 +1,21 @@
 # creating a new vpc with dns resolution support
-resource "aws_vpc" "vpc_guilherme" {
+resource "aws_vpc" "vpc_nd" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
   enable_dns_hostnames = true
 
   tags = {
-    Name      = "Guilherme VPC"
+    Name      = "nd VPC"
     BuildWith = "terraform"
   }
 }
 
 # adding public subnet
 resource "aws_subnet" "public_subnet" {
-  vpc_id                  = "${ aws_vpc.vpc_guilherme.id }"
+  vpc_id                  = "${ aws_vpc.vpc_nd.id }"
   cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
-  availability_zone       = "us-east-2a"
+  availability_zone       = "us-east-1a"
 
   tags = {
     Name      = "Public Subnet"
@@ -25,9 +25,9 @@ resource "aws_subnet" "public_subnet" {
 
 # adding private subnet
 resource "aws_subnet" "private_subnet" {
-  vpc_id            = "${ aws_vpc.vpc_guilherme.id }"
+  vpc_id            = "${ aws_vpc.vpc_nd.id }"
   cidr_block        = "10.0.2.0/24"
-  availability_zone = "us-east-2a"
+  availability_zone = "us-east-1a"
 
   tags = {
     Name      = "Private Subnet"
@@ -37,7 +37,7 @@ resource "aws_subnet" "private_subnet" {
 
 # adding internet gateway for external communication
 resource "aws_internet_gateway" "internet_gateway" {
-  vpc_id = "${ aws_vpc.vpc_guilherme.id }"
+  vpc_id = "${ aws_vpc.vpc_nd.id }"
 
   tags = {
     Name      = "Internet Gateway"
@@ -47,7 +47,7 @@ resource "aws_internet_gateway" "internet_gateway" {
 
 # create external route to IGW
 resource "aws_route" "external_route" {
-  route_table_id         = "${ aws_vpc.vpc_guilherme.main_route_table_id }"
+  route_table_id         = "${ aws_vpc.vpc_nd.main_route_table_id }"
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = "${ aws_internet_gateway.internet_gateway.id }"
 }
@@ -67,7 +67,7 @@ resource "aws_nat_gateway" "nat" {
 
 # creating private route table 
 resource "aws_route_table" "private_route_table" {
-  vpc_id = "${ aws_vpc.vpc_guilherme.id }"
+  vpc_id = "${ aws_vpc.vpc_nd.id }"
 
   tags {
     Name      = "Private Subnet Route Table"
@@ -85,7 +85,7 @@ resource "aws_route" "private_route" {
 # associate subnet public to public route table
 resource "aws_route_table_association" "public_subnet_association" {
   subnet_id      = "${ aws_subnet.public_subnet.id }"
-  route_table_id = "${ aws_vpc.vpc_guilherme.main_route_table_id }"
+  route_table_id = "${ aws_vpc.vpc_nd.main_route_table_id }"
 }
 
 # associate subnet private subnet to private route table
