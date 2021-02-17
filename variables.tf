@@ -9,7 +9,7 @@ terraform {
 
 # aws provider
 provider "aws" {
-  region = "us-east-2"
+  region = "us-east-1"
 }
 
 # fetching coreos AMI
@@ -34,7 +34,7 @@ variable "public_key_path" {
 
 # name of the key to be used
 variable "key_name" {
-  default = "guilherme-ssh-key"
+  default = "nd-ssh-key"
 }
 
 # EC2 machine instance type 
