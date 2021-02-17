@@ -20,7 +20,7 @@ resource "aws_instance" "3-tier-nd" {
     Name      = "3-tier-nd"
   }
 
-  vpc_security_group_ids = ["${ aws_security_group.3-tier-guilherme-security-group.id }"] # attaching security group
+  vpc_security_group_ids = ["${ aws_security_group.3-tier-nd-security-group.id }"] # attaching security group
 
   user_data = "${ data.template_file.user_data.rendered }" # adding the user data
 }
