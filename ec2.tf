@@ -5,7 +5,7 @@ resource "aws_key_pair" "auth" {
 }
 
 # creating EC2 instance with given userdata to initialize the applications we need in this example
-resource "aws_instance" "3-tier-guilherme" {
+resource "aws_instance" "3-tier-nd" {
   ami = "${ data.aws_ami.coreos.id }"
 
   instance_type = "${ var.instance_type }"
@@ -17,7 +17,7 @@ resource "aws_instance" "3-tier-guilherme" {
 
   tags {
     BuiltWith = "terraform"
-    Name      = "3-tier-guilherme"
+    Name      = "3-tier-nd"
   }
 
   vpc_security_group_ids = ["${ aws_security_group.3-tier-guilherme-security-group.id }"] # attaching security group
